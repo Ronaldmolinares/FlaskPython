@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notes App</title>
+
+</head>
+
+<body>
+    <h1>Welcome to the Notes App</h1>
+    <p>This is a simple notes application where you can create, view, and manage your notes.</p>
+    <p>Current role: {{role}}</p>
+    <p>Notes:</p>
+    <ul>
+        {% for note in notes %}
+        <li>
+            <h3>{{note.title}}</h3>
+            <p>{{note.content}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% if role == 'admin' %}
+    <p>You have administrative privileges.</p>
+    <button>Eliminar</button>
+    {% else %}
+    <p>You have standard privileges.</p>
+    <button>Solicitar acceso</button>
+    {% endif %}
+
+</body>
+
+
+</html>

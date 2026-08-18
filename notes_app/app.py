@@ -1,12 +1,18 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def create_app():
-    return "Hello World, :) Flask is working!"
+def home():
+    role = "admin"
+    notes = [
+        {"id": 1, "title": "Note 1", "content": "This is the content of note 1."},
+        {"id": 2, "title": "Note 2", "content": "This is the content of note 2."},
+        {"id": 3, "title": "Note 3", "content": "This is the content of note 3."}
+    ]
+    return render_template("home.html", role=role, notes=notes)
 
 
 # Para ejecutar la aplicacion --> flask run

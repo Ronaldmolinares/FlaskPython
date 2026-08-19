@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 
 
 app = Flask(__name__)
@@ -38,3 +38,17 @@ def api_info():
     }
 
     return jsonify(data), 200
+
+@app.route("/confirmation")
+def confirmation():
+    return "Formulario enviado correctamente.", 201
+
+@app.route("/create-note", methods=["GET", "POST"])
+def create_note():
+    if request.method == "POST":
+        note = request.form.get("note", "No encontrada")
+        return redirect(
+            url_for("confirmation", note=note)
+        )
+    
+    return render_template("note_form.html")

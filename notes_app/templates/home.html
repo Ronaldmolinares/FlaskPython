@@ -10,24 +10,22 @@
 <body>
     <h1>Welcome to the Notes App</h1>
     <p>This is a simple notes application where you can create, view, and manage your notes.</p>
-    <p>Current role: {{role}}</p>
     <p>Notes:</p>
     <ul>
         {% for note in notes %}
         <li>
+            <h6>{{note.id}}</h6>
+            <h5>{{note.created_at}}</h5>
             <h3>{{note.title}}</h3>
             <p>{{note.content}}</p>
+            <br>
         </li>
+        {% else %}
+        Aún no se han creado NOTAS
         {% endfor %}
     </ul>
-    {% if role == 'admin' %}
-    <p>You have administrative privileges.</p>
-    <button>Eliminar</button>
-    {% else %}
-    <p>You have standard privileges.</p>
-    <button>Solicitar acceso</button>
-    {% endif %}
-
+    
+    <a href="{{ url_for('create_note') }}">Agregar un nueva nota</a>
 </body>
 
 

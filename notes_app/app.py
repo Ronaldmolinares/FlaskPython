@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 DB_FILE_PATH = os.path.join(os.path.dirname(__file__), "notes.sqlite")
@@ -75,3 +75,21 @@ def create_note():
         return render_template("home.html")
 
     return render_template("note_form.html")
+
+
+@app.route("/edit-note/<int:id>", methods=["GET", "POST"])
+def edit_note(id):
+    note = Note.query.get_or_404(id)
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        content = request.form.get("content")
+
+        note.title = title
+        note.content = content
+
+        db.session.commit()
+
+        return redirect(url_for("home"))
+
+    return render_template("edit_note.html", note=note)

@@ -18,6 +18,7 @@
             <h5>{{note.created_at}}</h5>
             <h3>{{note.title}}</h3>
             <p>{{note.content}}</p>
+            <a href="{{ url_for('edit_note', id=note.id) }}">* Editar Nota *</a>
             <br>
         </li>
         {% else %}

@@ -1,12 +1,16 @@
 from config import Config
 from flask import Flask, render_template, request
+from flask_migrate import Migrate
 from models import db
 from notes.routes_notes import notes_bp
 from users.routes_users import users_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 db.init_app(app)
+migrate = Migrate(app, db)
+
 with app.app_context():
     db.create_all()
 

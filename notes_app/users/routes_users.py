@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, request, url_for
+from flask import Blueprint, redirect, request, session, url_for
 from models import User, db  # type: ignore[import-not-found]
 
 users_bp = Blueprint("users", __name__)
@@ -19,6 +19,9 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        session["user_id"] = new_user.id
+        session["username"] = new_user.username
+
         return redirect(url_for("notes.home"))
 
     return redirect(url_for("index"))
@@ -33,8 +36,16 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and user.check_password(password_attempt):
+            session["user_id"] = user.id
+            session["username"] = user.username
             return redirect(url_for("notes.home"))
 
         return "Usuario o contraseña incorrectos.", 401
 
+    return redirect(url_for("index"))
+
+
+@users_bp.route("/logout")
+def logout():
+    session.clear()
     return redirect(url_for("index"))

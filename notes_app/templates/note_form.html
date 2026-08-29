@@ -1,23 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear un Nueva Nota</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login/style.css') }}">
+    <title>Crear Nota</title>
 </head>
 
-<body>
-    <h1>Crear Nota</h1>
-    <form method="POST">
-        <label for="title">Titulo</label>
-        <input type="text" name="title" id="title">
-        <br>
-        <label for="content">Contenido</label>
-        <input type="text" name="content" id="content">
+<body class="notes-page">
+    <div class="note-form-card">
+        <div class="form-heading">
+            <h1>Crear Nota</h1>
+            <a href="{{ url_for('notes.home') }}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+        <form method="POST">
+            <label for="title">Título</label>
+            <input type="text" name="title" id="title" placeholder="Ej: Tareas del día" required>
 
-        <input type="submit" value="Crear nota">
-    </form>
+            <label for="content">Contenido</label>
+            <textarea name="content" id="content" placeholder="Escribe tu nota aquí..." required></textarea>
+
+            <input type="submit" value="Crear nota">
+        </form>
+    </div>
 </body>
 
 </html>

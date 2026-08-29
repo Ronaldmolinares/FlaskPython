@@ -4,44 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>Notes App</title>
 </head>
 
-<body>
-    <h1>Welcome to the Notes App</h1>
-    <p>This is a simple notes application where you can create, view, and manage your notes.</p>
+<body class="notes-page">
+    <div class="notes-shell">
+        <header class="notes-header">
+            <div>
+                <h1>Mis notas</h1>
+                <p>Bienvenido, {{ session.get('username', 'usuario') }}.</p>
+            </div>
+            <div class="notes-actions">
+                <a class="primary-btn" href="{{ url_for('notes.create_note') }}"><i class="fa-solid fa-plus"></i> Nueva
+                    nota</a>
+                <a class="secondary-btn" href="{{ url_for('users.logout') }}"><i
+                        class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
+            </div>
+        </header>
 
-    <section>
-        <a href="{{ url_for('users.login') }}">Cerrar sesión</a>
-    </section>
+        <section class="notes-stats">
+            <div class="stat-card">
+                <span>Total de notas</span>
+                <strong>{{ notes|length }}</strong>
+            </div>
+            <div class="stat-card accent">
+                <span>Usuario</span>
+                <strong>{{ session.get('username', 'usuario') }}</strong>
+            </div>
+        </section>
 
+        <section>
+            <ul class="note-list">
+                {% for note in notes %}
+                <li class="note-card">
+                    <div class="note-card-header">
+                        <h3>{{ note.title }}</h3>
+                        <span class="note-badge">#{{ note.id }}</span>
+                    </div>
+                    <small>Creado: {{ note.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+                    <p>{{ note.content }}</p>
 
-    <h2>Notes:</h2>
-
-    <section>
-        <ul>
-            {% for note in notes %}
-            <li>
-                <!-- Estructura jerárquica corregida -->
-                <h3>{{ note.title }}</h3>
-                <small>ID: {{ note.id }} | Creado: {{ note.created_at }}</small>
-                <p>{{ note.content }}</p>
-
-                <a href="{{ url_for('notes.edit_note', id=note.id) }}">Editar Nota 🖊️</a>
-                <br><br>
-                <form action="{{ url_for('notes.delete_note', id=note.id) }}" method="POST"
-                    onsubmit="return confirm('¿Está seguro de eliminar esta nota?');">
-                    <button type="submit">Eliminar</button>
-                </form>
-            </li>
-            {% else %}
-            <li>Aún no se han creado NOTAS</li>
-            {% endfor %}
-        </ul>
-
-        <a href="{{ url_for('notes.create_note') }}">Agregar una nueva nota</a>
-    </section>
-
+                    <div class="note-actions">
+                        <a href="{{ url_for('notes.edit_note', id=note.id) }}"><i class="fa-solid fa-pen-to-square"></i>
+                            Editar</a>
+                        <form action="{{ url_for('notes.delete_note', id=note.id) }}" method="POST"
+                            onsubmit="return confirm('¿Está seguro de eliminar esta nota?');">
+                            <button type="submit"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                        </form>
+                    </div>
+                </li>
+                {% else %}
+                <li class="empty-state">
+                    <i class="fa-regular fa-note-sticky"></i>
+                    Aún no tienes notas creadas. ¡Empieza por agregar una nueva!
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from flask import Blueprint, redirect, render_template, request, session, url_for
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from models import Note, db  # type: ignore[import-not-found]
 
 notes_bp = Blueprint("notes", __name__)
@@ -39,6 +39,7 @@ def create_note():
         db.session.add(note_db)
         db.session.commit()
 
+        flash("Nota creada exitosamente.", "success")
         return redirect(url_for("notes.home"))
 
     return render_template("note_form.html")
@@ -60,6 +61,7 @@ def edit_note(id):
 
         db.session.commit()
 
+        flash("Nota actualizada exitosamente.", "success")
         return redirect(url_for("notes.home"))
 
     return render_template("edit_note.html", note=note)
@@ -74,4 +76,5 @@ def delete_note(id):
     db.session.delete(note)
     db.session.commit()
 
+    flash("Nota eliminada exitosamente.", "success")
     return redirect(url_for("notes.home"))

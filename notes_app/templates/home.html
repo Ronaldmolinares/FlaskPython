@@ -36,7 +36,17 @@
         </section>
 
         <section>
-            <ul class="note-list">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                <ul>
+                    {% for category, message in messages %}
+                    <li class="flash-message {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+
                 {% for note in notes %}
                 <li class="note-card">
                     <div class="note-card-header">
@@ -61,7 +71,7 @@
                     Aún no tienes notas creadas. ¡Empieza por agregar una nueva!
                 </li>
                 {% endfor %}
-            </ul>
+                </ul>
         </section>
     </div>
 </body>

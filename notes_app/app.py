@@ -5,26 +5,28 @@ from models import db
 from notes.routes_notes import notes_bp
 from users.routes_users import users_bp
 
-app = Flask(__name__)
-app.config.from_object(Config)
 
-db.init_app(app)
-migrate = Migrate(app, db)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-with app.app_context():
-    db.create_all()
+    db.init_app(app)
+    migrate = Migrate(app, db)
 
-app.register_blueprint(notes_bp)
-app.register_blueprint(users_bp)
+    with app.app_context():
+        db.create_all()
 
+    app.register_blueprint(notes_bp)
+    app.register_blueprint(users_bp)
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+    @app.route("/")
+    def index():
+        return render_template("index.html")
 
+    @app.route("/contact", methods=["GET", "POST"])
+    def contact():
+        if request.method == "POST":
+            return "Formulario enviado correctamente.", 201
+        return "Página de contacto."
 
-@app.route("/contact", methods=["GET", "POST"])
-def contact():
-    if request.method == "POST":
-        return "Formulario enviado correctamente.", 201
-    return "Página de contacto."
+    return app
